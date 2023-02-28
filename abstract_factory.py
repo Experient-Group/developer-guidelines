@@ -51,7 +51,7 @@ class AbstractTable(ABC):
 class VictorianFactoryTable(AbstractTable):
     #make victorian table
     def make_table(self) -> str:
-        return "Victorian Chair"
+        return "Victorian Table"
 
 class ModernFactoryTable(AbstractTable):
     #make modern table
