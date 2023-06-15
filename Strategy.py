@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
-
+#Custom class to create sortable objects
 class Box():
     def __init__(self, name, color, size):
         self.name = name
@@ -10,6 +10,7 @@ class Box():
     def __str__(self):
         return self.name + ", " + self.color + " ," + self.size
 
+#Context class to reference Strategy objects
 class Organization():
     def __init__(self, strategy: Strategy):
         self._strategy = strategy
@@ -20,11 +21,13 @@ class Organization():
     def organize_boxes(self, boxes):
         return(self._strategy.organize(boxes))
 
+#Abstract Strategy interface
 class Strategy(ABC):
     @abstractmethod
     def organize(self, data):
         pass
 
+#Different Concrete Strategy implementations
 class ByColor(Strategy):
     def organize(self, data):
         return data.sort(key=lambda box: box.color)
@@ -44,9 +47,7 @@ if __name__ == "__main__":
     box4 = Box("box4", "red", "large")
     boxes = [box1, box2, box3, box4]
 
-    organization = Organization(ByName)
-
-    organization.set_strategy(ByColor())
+    organization = Organization(ByColor)
     print("Sorted by color: ")
     organization.organize_boxes(boxes)
     for i in boxes:
@@ -65,4 +66,3 @@ if __name__ == "__main__":
     organization.organize_boxes(boxes)
     for i in boxes:
         print(i)
-    print("\n")
