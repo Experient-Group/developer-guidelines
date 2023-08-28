@@ -75,6 +75,7 @@ class AbstractProductSofa(ABC):
     @abstractmethod
     def useful_function_a(self) -> str:
         pass
+    
 
 class AbstractProductCoffeeTable(ABC):
     """
@@ -95,7 +96,7 @@ Concrete Products are created by corresponding Concrete Factories.
 class ArtDecoChair(AbstractProductChair):
     def useful_function_a(self) -> str:
         return "The result of the product ArtDecoChair."
-
+    
 
 class ArtDecoSofa(AbstractProductSofa):
     def useful_function_a(self) -> str:
@@ -106,54 +107,23 @@ class ArtDecoCoffeeTable(AbstractProductCoffeeTable):
         return "The result of the product ArtDecoCoffeeTable."
 
 
-
 """
 Concrete Products are created by corresponding Concrete Factories.
 """
 
 
 class VictorianChair(AbstractProductChair):
-    def useful_function_b(self) -> str:
-        return "The result of the product B1."
-
-    """
-    The variant, Product B1, is only able to work correctly with the variant,
-    Product A1. Nevertheless, it accepts any instance of AbstractProductChair as an
-    argument.
-    """
-
-    def another_useful_function_b(self, collaborator: AbstractProductChair) -> str:
-        result = collaborator.useful_function_a()
-        return f"The result of the B1 collaborating with the ({result})"
-
+    def useful_function_a(self) -> str:
+        return "The result of the product VictorianChair."
 
 class VictorianSofa(AbstractProductSofa):
-    def useful_function_b(self) -> str:
-        return "The result of the product B2."
-
-    def another_useful_function_b(self, collaborator: AbstractProductSofa):
-        """
-        The variant, Product B2, is only able to work correctly with the
-        variant, Product A2. Nevertheless, it accepts any instance of
-        AbstractProductChair as an argument.
-        """
-        result = collaborator.useful_function_a()
-        return f"The result of the B2 collaborating with the ({result})"
+    def useful_function_a(self) -> str:
+        return "The result of the product VictorianSofa."
 
 class VictorianCoffeeTable(AbstractProductCoffeeTable):
-    def useful_function_b(self) -> str:
-        return "The result of the product B2."
-
-    def another_useful_function_b(self, collaborator: AbstractProductCoffeeTable):
-        """
-        The variant, Product B2, is only able to work correctly with the
-        variant, Product A2. Nevertheless, it accepts any instance of
-        AbstractProductChair as an argument.
-        """
-        result = collaborator.useful_function_a()
-        return f"The result of the B2 collaborating with the ({result})"
-
-
+    def useful_function_a(self) -> str:
+        return "The result of the product VictorianCoffeeTable."
+    
 
 def client_code(factory: AbstractFactory) -> None:
     """
@@ -161,11 +131,11 @@ def client_code(factory: AbstractFactory) -> None:
     types: AbstractFactory and AbstractProduct. This lets you pass any factory
     or product subclass to the client code without breaking it.
     """
-    product_a = factory.create_product_a()
-    product_b = factory.create_product_b()
+    product_chair = factory.create_product_chair()
+    product_sofa = factory.create_product_sofa()
 
-    print(f"{product_b.useful_function_b()}")
-    print(f"{product_b.another_useful_function_b(product_a)}", end="")
+    print(f"{product_chair.useful_function_a()}")
+    print(f"{product_sofa.useful_function_a()}")
 
 
 if __name__ == "__main__":
@@ -178,4 +148,4 @@ if __name__ == "__main__":
     print("\n")
 
     print("Client: Testing the same client code with the second factory type:")
-    client_code(ConcreteFactory2())
+    client_code(VictorianFactory())
