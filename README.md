@@ -24,101 +24,36 @@ Git is software for tracking changes in any set of files, usually used for coord
 
 1) Create an account at [GitHub](https://github.com/)
 
-2) Install Git Credential Manager
+2) Adding & Updating GitHub Access Token on Mac
 
-    __Windows:__
-    Git for windows should already come with git-credential-manager. [More details here](https://github.com/GitCredentialManager/git-credential-manager/blob/main/README.md#windows)
-
-    __Mac:__
-    `brew tap microsoft/git`
-    `brew install --cask git-credential-manager-core`
+    Follow the instructions on Github to [Create an Access Token in Github](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
     
-3) Configure Git
-Configure git to match your name and the CFA e-mail address associated with your GitHub account:
-Required:
-`git config --global user.name "John Doe"`
-`git config --global user.email john.doe@cfacorp.com`
+    ### Configure Git to use the osxkeychain
     
-    Optional:
-    > This will prevent git credential manager from using a gui popup. 
+    By default, git credentials are not cached so you need to tell Git if you want to avoid having to provide them each time Github requires you to authenticate. On Mac, Git comes with an “osxkeychain” mode, which caches credentials in the secure keychain that’s attached to your system account.
     
-    `git config --global credential.guiPrompt false`
-
-4) Clone your First Repository
-`git clone https://github.com/youngvz/youngvz.io`
-
-    Github credential manager should prompt you to choose one of the following authentication methods:
-
-    - Web browser (default)
+    You can tell Git you want to store credentials in the osxkeychain by running the following:-
     
-    - Device code
+    ```sh
+    git config --global credential.helper osxkeychain
+    ```
     
-    - Personal access token
-
-    Select options 1 or 2 to perform OAuth authentication which is what we recommend. Once selecting 1 or 2 follow the prompts and authorize access to our private org. Once complete your token will be stored in your operating system keychain/credential manager for later use with git. If your OAuth token ever expires the git credential manager will prompt again for you to renew your token.
-
-5) Configuring Git to support signed commits
-Signed Commits are required for interacting with github. This means you will need to create a gpg key pair, add the public key to your github user account, and point git to use your private key when committing. 
-
-    >⚠️ ️Warning: If you update your GPG key, please retain the old key; otherwise, GitHub will not be able to validate old commits! ⚠️
-
-- Install gpg if you don't currently have it installed.
-    __Mac:__
-    brew install gnupg
-    __Windows:__
-    Install gnupg from https://www.gnupg.org/download/
-
-- Create a gpg key.
- `gpg --gen-key --pinentry-mode=loopback --passphrase ""`
+    ### Add your access token to the osxkeychain
     
-    Enter your name and email. Make sure to use the email address that is associated with your github account.
-    If asked for a passphrase leave it blank. Entering a passphrase for your gpg key will cause many problems.
-
-- Get the ID of your gpg key.
-
-    Run the following command:
-`gpg --list-secret-keys --keyid-format LONG`
-
-
-- Copy the ID for the key that you will be using.
-
-    [Imgur](https://imgur.com/9ifVHkJ)
-
-    [Imgur](https://imgur.com/d5t2DZE)
-
-- Export and copy the public key. 
- Run the following command: 
-`gpg --armor --export id_of_key`
-    > The id of your key is highlighted in the image above.
-    Note, some Windows users may have better luck without the trailing semicolon in the command above.
-   
-  Copy the entire key from the terminal (including the "-----BEGIN PGP PUBLIC KEY BLOCK-----" and "-----END PGP PUBLIC KEY BLOCK-----").
-
-6) Add a GPG key in your github account and paste your public key.
-    - Go to your account setting in github.
-    [Imgur](https://imgur.com/Nog5VFt)
-    Go to "SSH and GPG Keys"
-    [Imgur](https://imgur.com/8Mwgq2g)
-    - Click "New GPG Key:
-    Paste the key that you copied from the terminal
-    - Click "Add GPG Key"
-    Configure Git to use your key when committing.
+    Now issue a command to interract with Github which requires authentication, eg. `git clone` or `git pull`. When you are prompted to supply your _Password for 'https://username@github.com':_ you enter your access token instead. Your token should now get cached in the osxkeychain automatically.
     
-    >Note: If you don't want to modify your global git configuration, run these commands from within a specific repository directory and omit the '–global' flag. This will configure your settings for that repo only.
-
-    On your local machine run the following command:
-    `git config --global user.signingkey id_of_key; # The ID of your key can be found by following step 3 above.`
-
-    Now when commiting or tagging use the following flags to sign.
-    For Commiting
-    `git commit -S -m "My commit message"`
-    For Tagging
-    `git tag -s v1.5 -m 'My tag message'` 
-
-    If you would like git to always sign without having to use the flag run the following command in terminal:
-    `git config --global commit.gpgSign true # note, this may not be desired if your account is used for more than just working with one org on github.`
+    ```sh
+    $ git clone https://github.com/username/repo.git
     
-     If you have an editor and are using built in git support you will need to see how to enable commit signing.  (Although when using VS Code, it just uses the underlying settings of git, so once git is configured like the above, the signing is taken care of.)
+    Cloning into 'repo'...
+    Username for 'https://github.com': your_github_username
+    Password for 'https://username@github.com': your_access_token
+    ```
+
+
+For more information please reference this link:
+https://gist.github.com/jonjack/bf295d4170edeb00e96fb158f9b1ba3c
+
 
 ## Git Best Practices
 #### Standards for Repositories
